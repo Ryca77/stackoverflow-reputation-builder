@@ -50,7 +50,6 @@ var showQuestion = function(question) {
 	return result;
 };
 
-
 // this function takes the results object from StackOverflow
 // and returns the number of results and tags to be appended to DOM
 var showSearchResults = function(query, resultNum) {
