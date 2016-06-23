@@ -84,6 +84,7 @@ var getUnanswered = function(tags) {
 		type: "GET",
 	})
 	.done(function(result){ //this waits for the ajax to return with a succesful promise object
+		console.log(result.items);
 		var searchResults = showSearchResults(request.tagged, result.items.length);
 
 		$('.search-results').html(searchResults);
@@ -100,56 +101,67 @@ var getUnanswered = function(tags) {
 	});
 };
 
-function showAnswerer (answerer) {
+function showAnswerer(answerer) {
 	
 	//clone output template//
 	var output = $('.templates .output').clone();
 	
 	//show user name and link to user//
-	var answererElem = results.find('.user-name a');
-	answererElem.attr('href', answerer.link);
-	answererElem.text(answerer.display_name);
+	var answererElem = output.find('.user-name a');
+	answererElem.attr('href', answerer.user.link);
+	answererElem.text(answerer.user.display_name);
 
 	//show user score//
-	var scoreElem = results.find('.score');
+	var scoreElem = output.find('.score');
 	scoreElem.text(answerer.score);
 
 	//show user post count//
-	var countElem = results.find('.count');
+	var countElem = output.find('.count');
 	countElem.text(answerer.post_count);
 
 	//show user accept rate//
-	var acceptElem = results.find('.accept');
-	acceptElem.text(answerer.accept_rate);
+	var acceptElem = output.find('.accept');
+	acceptElem.text(answerer.user.accept_rate);
 	
 	return output
 };
 
+function showAnswererResults(term, total) {
+	var totalNumber = total + ' results for <strong>' + term + '</strong>';
+	return totalNumber;
+};
+
+showFail = function(error){
+	var failElem = $('.templates .error').clone();
+	var failText = '<p>' + error + '</p>';
+	failElem.append(failText);
+};
+
 //get answerer data from api//
-function getTopAnswerers (query) {
+function getTopAnswerers(query) {
 	var params = {
 		tag: query,
-		site: 'stackoverflow',
-		sort: 'creation'
+		site: 'stackoverflow'
 	};
 
 	$.ajax({
 		url: "http://api.stackexchange.com/2.2/tags/" + query + "/top-answerers/all_time",
-		data: request,
+		data: params,
 		dataType: "jsonp",
 		type: "GET",
 	})
 
-	.success(function(results) {
-		var answererResults = showAnswererResults(params.tag, results.user.length);
+	.done(function(results) {
+		console.log(results.items);
+		var answererResults = showAnswererResults(params.tag, results.items.length);
 
-		$('.search-results').html(results);
-		$.each(results.user, function(score) {
+		$('.search-results').html(answererResults);
+		$.each(results.items, function(index, score) {
 			var answerer = showAnswerer(score);
 			$('.results').append(answerer);
 		});
 	})
-	.failure(function(fail) {
+	.fail(function(fail) {
 		var failElem = showFail(fail);
 		$('.search-results').append(failElem);
 	});
