@@ -15,7 +15,7 @@ $(document).ready( function() {
 		console.log(query);
 		getTopAnswerers(query);
 	});
-});
+
 
 // this function takes the question object returned by the StackOverflow request
 // and returns new result to be appended to DOM
@@ -167,4 +167,4 @@ function getTopAnswerers(query) {
 	});
 };
 
-
+});
