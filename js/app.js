@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 $(document).ready( function() {
 	$('.unanswered-getter').submit( function(e){
 		e.preventDefault();
@@ -18,8 +17,6 @@ $(document).ready( function() {
 	});
 });
 
-=======
->>>>>>> e1f91494b9ae5a39daee002f6f6c2c2370ec182a
 // this function takes the question object returned by the StackOverflow request
 // and returns new result to be appended to DOM
 var showQuestion = function(question) {
@@ -102,7 +99,7 @@ var getUnanswered = function(tags) {
 		$('.search-results').append(errorElem);
 	});
 };
-<<<<<<< HEAD
+
 function showAnswerer (answerer) {
 	
 	//clone output template//
@@ -137,7 +134,7 @@ function getTopAnswerers (query) {
 	};
 
 	$.ajax({
-		url: "http://api.stackexchange.com/2.2/tags/{tag}/top-answerers/{period}",
+		url: "http://api.stackexchange.com/2.2/tags/" + query + "/top-answerers/all_time",
 		data: request,
 		dataType: "jsonp",
 		type: "GET",
@@ -157,17 +154,5 @@ function getTopAnswerers (query) {
 		$('.search-results').append(failElem);
 	});
 };
-=======
 
 
-$(document).ready( function() {
-	$('.unanswered-getter').submit( function(e){
-		e.preventDefault();
-		// zero out results if previous search has run
-		$('.results').html('');
-		// get the value of the tags the user submitted
-		var tags = $(this).find("input[name='tags']").val();
-		getUnanswered(tags);
-	});
-});
->>>>>>> e1f91494b9ae5a39daee002f6f6c2c2370ec182a
